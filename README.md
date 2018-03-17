@@ -53,7 +53,7 @@ molecule test
 License
 -------
 
-GPL3
+GPLv3
 
 Author Information
 ------------------
