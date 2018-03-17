@@ -1,0 +1,28 @@
+---
+# tasks file for generic_docker_systemd
+
+- name: Create docker data directories
+  become: True
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  with_items: "{{ docker_data_directories}}"
+
+- name: Create systemd service
+  become: True
+  template:
+    src: systemd-service.template
+    dest: "/etc/systemd/system/{{ service_name }}.service"
+    owner: root
+    group: root
+
+- name: Enable systemd service and start it
+  become: True
+  systemd:
+    name: "{{ service_name }}"
+    enabled: yes
+    daemon_reload: yes
+    state: started

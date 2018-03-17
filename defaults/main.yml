@@ -1,0 +1,7 @@
+---
+# defaults file for generic_docker_systemd
+
+docker_data_directories:
+service_name:
+docker_image:
+docker_command:
