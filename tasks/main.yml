@@ -1,28 +1,58 @@
 ---
 # tasks file for generic_docker_systemd
 
-- name: Create docker data directories
-  become: True
-  file:
-    path: "{{ item }}"
-    state: directory
+- name: Pull docker service image
+  docker_image:
+    name: "{{ docker_image }}"
+
+- name: Pull docker database image
+  docker_image:
+    name: "{{ docker_db_image }}"
+  when: enable_db == true
+
+- name: Create a docker network for the service and the database
+  docker_network:
+    name: "{{ docker_network_name }}"
+
+- name: Create database data volume
+  docker_volume:
+    name: "{{ docker_service_db_volume_name }}"
+    state: present
+  when: enable_db == true
+  register: database_data_volume
+  ignore_errors: yes
+
+- name: Create service data volume
+  docker_volume:
+    name: "{{ docker_service_volume_name }}"
+    state: present
+  register: service_data_volume
+  ignore_errors: yes
+
+# Temporary fix for a bug that will make docker_volume fail if the container doesn't exists yet.
+
+- name: Create database data volume MANUALLY
+  command: "docker volume create {{ docker_service_db_volume_name }}"
+  notify: Setup database
+  when: database_data_volume.failed
+
+- name: Create service data volume MANUALLY
+  command: "docker volume create {{ docker_service_volume_name }}"
+  when: service_data_volume.failed
+
+- name: Create systemd database service
+  template:
+    src: systemd-service_db.template
+    dest: "/etc/systemd/system/{{ docker_service_prefix }}{{ service_db_name }}.service"
     owner: root
     group: root
-    mode: 0700
-  with_items: "{{ docker_data_directories}}"
+  when: enable_db == true
+  notify: Enable systemd database service and start it
 
 - name: Create systemd service
-  become: True
   template:
     src: systemd-service.template
-    dest: "/etc/systemd/system/{{ service_name }}.service"
+    dest: "/etc/systemd/system/{{ docker_service_prefix }}{{ service_name }}.service"
     owner: root
     group: root
-
-- name: Enable systemd service and start it
-  become: True
-  systemd:
-    name: "{{ service_name }}"
-    enabled: yes
-    daemon_reload: yes
-    state: started
+  notify: Enable systemd service and start it
