@@ -1,14 +1,19 @@
 [Unit]
 Description={{ service_name }}
+After=docker.service
 Requires=docker.service
-Wants=docker.service
+After={{ docker_service_prefix }}{{ service_db_name }}.service
+Wants={{ docker_service_prefix }}{{ service_db_name }}.service
 
 [Service]
 TimeoutStartSec=100
 Restart=always
 RestartSec=2s
 
-ExecStop=/usr/bin/docker stop {{ service_name }}
+ExecStartPre=-/usr/bin/docker stop {{ service_name }}
+ExecStartPre=-/usr/bin/docker rm {{ service_name }}
+ExecStartPre=/usr/bin/docker pull {{ docker_image }}
+
 ExecStart={{ docker_command }}
 
 [Install]
