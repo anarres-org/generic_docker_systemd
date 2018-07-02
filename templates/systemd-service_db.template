@@ -1,0 +1,19 @@
+[Unit]
+Description={{ service_db_name }}
+After=docker.service
+Wants=docker.service
+ 
+[Service]
+TimeoutStartSec=100
+Restart=always
+RestartSec=2s
+ExecStartPre=-/usr/bin/docker stop {{ service_db_name }}
+ExecStartPre=-/usr/bin/docker rm {{ service_db_name }}
+ExecStartPre=/usr/bin/docker pull {{ docker_db_image }}
+ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
+-v {{ docker_service_db_volume_name }}:/var/lib/mysql \
+--network {{ docker_network_name }} \
+{{ docker_db_image }}
+ 
+[Install]
+WantedBy=multi-user.target
