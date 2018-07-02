@@ -13,15 +13,16 @@
 - name: Create a docker network for the service and the database
   docker_network:
     name: "{{ docker_network_name }}"
+  when: create_network == true
 
 - name: Create database data volume
   docker_volume:
     name: "{{ docker_service_db_volume_name }}"
     state: present
-  when: enable_db == true
   register: database_data_volume
   notify: Setup database
   ignore_errors: yes
+  when: enable_db == true
 
 - name: Create service data volume
   docker_volume:
@@ -29,6 +30,7 @@
     state: present
   register: service_data_volume
   ignore_errors: yes
+  when: create_volume == true
 
 # Temporary fix for a bug that will make docker_volume fail if the container doesn't exists yet.
 
