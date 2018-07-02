@@ -1,0 +1,44 @@
+---
+
+- name: Preconfigure database
+  docker_container:
+    name: db-config
+    image: "{{ docker_db_image }}"
+    state: started
+    ports: "{{ db_config_port }}:3306"
+    volumes: "{{ docker_service_db_volume_name }}:/var/lib/mysql"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ db_pass }}"
+
+- name: Wait for configuration database container to start
+  wait_for:
+    port: "{{ db_config_port }}"
+    search_regex: mysql_native_password
+
+- name: Create a new database
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+    encoding: utf8
+    collation: utf8_general_ci
+    login_host: 127.0.0.1
+    login_port: "{{ db_config_port }}"
+    login_user: root
+    login_password: "{{ db_pass }}"
+
+- name: Create a new db user
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_user_pass }}"
+    priv: "{{ db_name }}.*:ALL"
+    host: "%"
+    state: present
+    login_host: 127.0.0.1
+    login_port: "{{ db_config_port }}"
+    login_user: root
+    login_password: "{{ db_pass }}"
+
+- name: Stop and remove configuration container
+  docker_container:
+    name: db-config
+    state: absent
