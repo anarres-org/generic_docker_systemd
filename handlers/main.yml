@@ -1,2 +1,20 @@
 ---
 # handlers file for generic_docker_systemd
+
+- name: Setup database
+  include_tasks: db-setup.yml
+  tags: db-setup
+
+- name: Enable systemd database service and start it
+  systemd:
+    name: "{{ docker_service_prefix }}{{ service_db_name }}"
+    enabled: yes
+    daemon_reload: yes
+    state: started
+
+- name: Enable systemd service and start it
+  systemd:
+    name: "{{ docker_service_prefix }}{{ service_name }}"
+    enabled: yes
+    daemon_reload: yes
+    state: started
