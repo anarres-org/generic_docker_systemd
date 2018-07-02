@@ -37,7 +37,7 @@
 - name: Create database data volume MANUALLY
   command: "docker volume create {{ docker_service_db_volume_name }}"
   notify: Setup database
-  when: database_data_volume.failed
+  when: database_data_volume.failed|default(false)
 
 - name: Create service data volume MANUALLY
   command: "docker volume create {{ docker_service_volume_name }}"
