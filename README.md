@@ -8,12 +8,11 @@ Requirements
 
 * Pip installed on host
 * Docker installed on the host
+* `python-mysqldb`
 
 Role Variables
 --------------
 
-* `docker_data_directories`: List of directories where the data is going to be
-  saved on the host.
 * `service_name`: Name of the systemd service.
 * `docker_image`: Name of the docker image to launch.
 * `docker_command`: Docker command used to launch the container.
