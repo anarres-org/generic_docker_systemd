@@ -10,7 +10,7 @@
         state: present
       with_items:
         - python-pip
-
+        - python-mysqldb
 
 # From: https://git.digitales.cslabrecha.org/ansible-roles/docker
 - name: '[Pretask] Install docker'
@@ -18,14 +18,23 @@
   roles:
     - role: docker
 
-
+## TODO: not ready
 - name: Deploy the docker image managed by a systemd service
   hosts: all
   vars:
-    docker_data_directories:
-      - "/root/docker/hello-world/data"
-    service_name: hello-world
-    docker_image: hello-world
-    docker_command: /usr/bin/docker run --rm -i --name "{{ service_name }}" "{{ docker_image }}"
+    docker_image: nginx:1
+    docker_db_image: mariadb:10.3
+    service_name: dummy
+    docker_command: |
+      "/usr/bin/docker run --rm -i --name {{ service_name }} \
+      -p 8080:80 \
+      -v {{ docker_service_volume_name }}:/usr/share/nginx/html \
+      --network {{ service_name }} \
+      {{ docker_image }}"
+    db_pass: "s3cr3t"
+    db_user_pass: "s3cr3t"
+    db_config_port: 3306
+    db_name: dummy
+    db_user: johndoe
   roles:
     - role: generic_docker_systemd
