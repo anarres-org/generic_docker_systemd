@@ -1,7 +1,29 @@
 ---
 # defaults file for generic_docker_systemd
 
-docker_data_directories:
+enable_db: true
+create_network: "{{ enable_db }}"
+create_volume: true
+
+docker_service_prefix: docker.
 service_name:
+docker_network_name: "{{ service_name }}"
+service_db_name: "{{ service_name }}-db"
+docker_service_volume_name: "{{ service_name }}"
+docker_service_db_volume_name: "{{ service_db_name }}"
+
 docker_image:
-docker_command:
+docker_db_image:
+docker_command: |
+  /usr/bin/docker run --rm --name "{{ service_name }}" \
+  -v docker_service_volume_name:/data \
+  --network "{{ service_name }}" \
+  "{{ docker_image }}"
+
+## db
+
+db_pass:
+db_user_pass:
+db_config_port: 3306
+db_name:
+db_user:
