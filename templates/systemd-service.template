@@ -2,8 +2,10 @@
 Description={{ service_name }}
 After=docker.service
 Requires=docker.service
+{% if enable_db == true %}
 After={{ docker_service_prefix }}{{ service_db_name }}.service
 Wants={{ docker_service_prefix }}{{ service_db_name }}.service
+{% endif %}
 
 [Service]
 TimeoutStartSec=100
