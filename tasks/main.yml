@@ -20,6 +20,7 @@
     state: present
   when: enable_db == true
   register: database_data_volume
+  notify: Setup database
   ignore_errors: yes
 
 - name: Create service data volume
