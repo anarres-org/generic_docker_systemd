@@ -41,7 +41,7 @@
 
 - name: Create service data volume MANUALLY
   command: "docker volume create {{ docker_service_volume_name }}"
-  when: service_data_volume.failed
+  when: service_data_volume.failed|default(false)
 
 - name: Create systemd database service
   template:
