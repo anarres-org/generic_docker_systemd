@@ -14,6 +14,7 @@ Role Variables
 --------------
 
 * `enable_db`: Boolean to enable database container deployment.
+* `create_user_and_db`: Boolean to enable the creation of a DB and a user.
 * `create_network`: Boolean to enable docker network creation for the service
 and the DB.
 * `create_volume`: Boolean to enable the creation of a volume for the service
