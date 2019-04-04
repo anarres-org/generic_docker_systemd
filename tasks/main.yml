@@ -8,12 +8,12 @@
 - name: Pull docker database image
   docker_image:
     name: "{{ docker_db_image }}"
-  when: enable_db == true
+  when: enable_db
 
 - name: Create a docker network for the service and the database
   docker_network:
     name: "{{ docker_network_name }}"
-  when: create_network == true
+  when: create_network
 
 - name: Create database data volume
   docker_volume:
@@ -21,16 +21,16 @@
     state: present
   register: database_data_volume
   notify: Setup database
-  ignore_errors: yes
-  when: enable_db == true
+  ignore_errors: true
+  when: enable_db
 
 - name: Create service data volume
   docker_volume:
     name: "{{ docker_service_volume_name }}"
     state: present
   register: service_data_volume
-  ignore_errors: yes
-  when: create_volume == true
+  ignore_errors: true
+  when: create_volume
 
 # Temporary fix for a bug that will make docker_volume fail if the container doesn't exists yet.
 
@@ -49,7 +49,7 @@
     dest: "/etc/systemd/system/{{ docker_service_prefix }}{{ service_db_name }}.service"
     owner: root
     group: root
-  when: enable_db == true
+  when: enable_db
   notify: Enable systemd database service and start it
 
 - name: Create systemd service
