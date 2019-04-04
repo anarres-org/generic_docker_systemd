@@ -8,7 +8,7 @@ Wants={{ docker_service_prefix }}{{ service_db_name }}.service
 {% endif %}
 
 [Service]
-TimeoutStartSec=100
+TimeoutStartSec=infinity
 Restart=always
 RestartSec=2s
 
