@@ -5,6 +5,7 @@ Wants=docker.service
  
 [Service]
 TimeoutStartSec=infinity
+TimeoutStopSec=15
 Restart=always
 RestartSec=2s
 ExecStartPre=-/usr/bin/docker stop {{ service_db_name }}
