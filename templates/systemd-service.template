@@ -18,6 +18,7 @@ ExecStartPre=-/usr/bin/docker rm {{ service_name }}
 ExecStartPre=/usr/bin/docker pull {{ docker_image }}
 
 ExecStart={{ docker_command }}
+ExecStop=/usr/bin/docker stop {{ service_name }}
 
 [Install]
 WantedBy=multi-user.target
