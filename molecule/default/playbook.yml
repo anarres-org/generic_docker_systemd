@@ -18,21 +18,20 @@
   roles:
     - role: docker
 
-## TODO: not ready
 - name: Deploy the docker image managed by a systemd service
   hosts: all
   vars:
-    docker_image: nginx:1
+    docker_image: nginx:alpine
     docker_db_image: mariadb:10.3
     service_name: dummy
     docker_command: |
-      "/usr/bin/docker run --rm -i --name {{ service_name }} \
+      /usr/bin/docker run --rm --name {{ service_name }} \
       -p 8080:80 \
       -v {{ docker_service_volume_name }}:/usr/share/nginx/html \
       --network {{ service_name }} \
-      {{ docker_image }}"
-    db_pass: "s3cr3t"
-    db_user_pass: "s3cr3t"
+      {{ docker_image }}
+    db_pass: 's3cr3t'
+    db_user_pass: 's3cr3t'
     db_config_port: 3306
     db_name: dummy
     db_user: johndoe
