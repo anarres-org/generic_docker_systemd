@@ -1,5 +1,7 @@
 ---
 
+## MariaDB setup
+
 - name: Preconfigure database
   docker_container:
     name: db-config
@@ -9,11 +11,13 @@
     volumes: "{{ docker_service_db_volume_name }}:/var/lib/mysql"
     env:
       MYSQL_ROOT_PASSWORD: "{{ db_pass }}"
+  when: db_type == 'mariadb'
 
 - name: Wait for configuration database container to start
   wait_for:
     port: "{{ db_config_port }}"
     search_regex: mysql_native_password
+  when: db_type == 'mariadb'
 
 - name: Create a new database
   mysql_db:
@@ -25,7 +29,7 @@
     login_port: "{{ db_config_port }}"
     login_user: root
     login_password: "{{ db_pass }}"
-  when: create_user_and_db
+  when: create_user_and_db and db_type == 'mariadb'
 
 - name: Create a new db user
   mysql_user:
@@ -38,7 +42,37 @@
     login_port: "{{ db_config_port }}"
     login_user: root
     login_password: "{{ db_pass }}"
-  when: create_user_and_db
+  when: create_user_and_db and db_type == 'mariadb'
+
+## Postgres
+
+- name: Create data directory
+  file:
+    path: "{{ docker_service_directory_db }}"
+    state: directory
+    owner: "{{ user_uid_1000 }}"
+    group: "{{ group_gid_1000 }}"
+
+- name: Preconfigure database
+  docker_container:
+    name: db-config
+    image: "{{ docker_db_image }}"
+    state: started
+    ports: "{{ db_config_port }}:5432"
+    volumes: "{{ docker_service_directory_db }}:/var/lib/postgresql/data"
+    env:
+      POSTGRES_PASSWORD: "{{ db_pass }}"
+      POSTGRES_USER: "{{ db_pass }}"
+      POSTGRES_DB: "{{ db_pass }}"
+  when: db_type == 'postgres'
+
+- name: Wait for configuration database container to start
+  wait_for:
+    port: "{{ db_config_port }}"
+  when: db_type == 'postgres'
+
+## Then for both cases
+
 - name: Stop and remove configuration container
   docker_container:
     name: db-config

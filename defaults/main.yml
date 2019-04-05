@@ -23,6 +23,10 @@ docker_command: |
 
 ## db
 
+db_type: mariadb
+
+docker_service_directory_db:
+
 db_pass:
 db_user_pass:
 db_config_port: 3306

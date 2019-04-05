@@ -22,7 +22,7 @@
   register: database_data_volume
   notify: Setup database
   ignore_errors: true
-  when: enable_db
+  when: enable_db and db_type == 'mariadb'
 
 - name: Create service data volume
   docker_volume:

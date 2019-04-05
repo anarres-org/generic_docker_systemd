@@ -9,6 +9,9 @@ Requirements
 * Pip installed on host
 * Docker installed on the host
 * `python-mysqldb`
+* If you use postgres as a database (not the default mariadb), create a
+  directory of the database data owned by the user with **gid** and **uid**
+  **1000**. Specify it in the variable `docker_service_directory_db`.
 
 Role Variables
 --------------
@@ -16,12 +19,12 @@ Role Variables
 * `enable_db`: Boolean to enable database container deployment.
 * `create_user_and_db`: Boolean to enable the creation of a DB and a user.
 * `create_network`: Boolean to enable docker network creation for the service
-and the DB.
+   and the DB.
 * `create_volume`: Boolean to enable the creation of a volume for the service
-container.
+   container.
 * `docker_service_prefix`: Prefix for the in-docker services.
-	This is usuful to be able to restart all of them with one command:
-	`systemctl restart docker.*`
+   This is useful to be able to restart all of them with one command:
+   `systemctl restart docker.*`
 * `service_name`: Name of the systemd service.
 * `service_db_name`: Name of the systemd DB service.
 * `docker_network_name`: Name of the docker network for the service and DB.
@@ -30,6 +33,8 @@ container.
 * `docker_command`: Docker command used to launch the container.
 * `docker_service_volume_name`: Name of the docker volume for the service.
 * `docker_service_db_volume_name`: Name of the docker volume for the DB.
+* `db_type`: `mariadb` (default) or `postgres`.
+* `docker_service_directory_db`: Path for the postgres db data.
 * `db_pass`: Root password for the DB.
 * `db_user_pass`: User password for the DB.
 * `db_config_port`: Host port that will be binded for the DB setup.
@@ -76,4 +81,4 @@ GPLv3
 Author Information
 ------------------
 
-m0wer [ at ] autistici.org
+m0wer (at) autistici.org
