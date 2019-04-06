@@ -30,6 +30,7 @@ Role Variables
 * `docker_network_name`: Name of the docker network for the service and DB.
 * `docker_image`: Name of the docker image to launch as a service.
 * `docker_db_image`: Name of the docker image to launch as the service's DB.
+  Use the debian based one for postgres.
 * `docker_command`: Docker command used to launch the container.
 * `docker_service_volume_name`: Name of the docker volume for the service.
 * `docker_service_db_volume_name`: Name of the docker volume for the DB.
