@@ -14,7 +14,7 @@ ExecStartPre=/usr/bin/docker pull {{ docker_db_image }}
 
 {%if db_type == 'postgres' %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
--v {{ docker_service_db_volume_name }}:/var/lib/mysql \
+-v {{ docker_service_db_volume_name }}:/var/lib/postgresql/data \
 --user "1000:1000" \
 --network {{ docker_network_name }} \
 {{ docker_db_image }}
