@@ -20,7 +20,7 @@ ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 {{ docker_db_image }}
 {% else %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
--v {{ docker_service_directory_db }}:/var/lib/postgresql/data \
+-v {{ docker_service_db_volume_name }}:/var/lib/mysql \
 --network {{ docker_network_name }} \
 {{ docker_db_image }}
 {% endif %}
