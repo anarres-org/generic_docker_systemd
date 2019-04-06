@@ -14,7 +14,7 @@ docker_service_volume_name: "{{ service_name }}"
 docker_service_db_volume_name: "{{ service_db_name }}"
 
 docker_image:
-docker_db_image:
+docker_db_image: mariadb:10.3
 docker_command: |
   /usr/bin/docker run --rm --name "{{ service_name }}" \
   -v docker_service_volume_name:/data \
@@ -28,7 +28,7 @@ db_type: mariadb
 docker_service_directory_db:
 
 db_pass:
-db_user_pass:
+db_user_pass: "{{ db_pass }}"
 db_config_port: 3306
 db_name:
 db_user:

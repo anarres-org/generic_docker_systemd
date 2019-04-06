@@ -53,8 +53,46 @@ Example Playbook
 - name: Deploy the docker image managed by a systemd service
   hosts: all
   vars:
-    docker_data_directories:
-      - "/root/docker/hello-world/data"
+    db_type: mariadb
+    db_pass: 'changeme'
+    db_user_pass: 'changeme'
+    db_config_port: 3306
+    db_name: hello-world
+    db_user: hello-world
+    service_name: hello-world
+    docker_image: hello-world
+    docker_command: /usr/bin/docker run --rm -i --name "{{ service_name }}" "{{ docker_image }}"
+  roles:
+    - role: generic_docker_systemd
+```
+
+If you are using postgres, you can use the following task to create the
+required directory:
+
+```yaml
+- name: '[Pretask] Create directories'
+  hosts: all
+  vars:
+    db_type: postgres
+    docker_service_directory_db: /data/hello-world/db
+  tasks:
+    - name: Create db data directory
+      file:
+        path: "{{ docker_service_directory_db }}"
+        state: directory
+        owner: [user with uid 1000]
+        group: [group with gid 1000]
+        mode: 0700
+
+- name: Deploy the docker image managed by a systemd service
+  hosts: all
+  vars:
+    db_type: postgres
+    docker_service_directory_db: /data/hello-world/db
+    db_user_pass: 'changeme'
+    db_config_port: 5432
+    db_name: hello-world
+    db_user: hello-world
     service_name: hello-world
     docker_image: hello-world
     docker_command: /usr/bin/docker run --rm -i --name "{{ service_name }}" "{{ docker_image }}"
@@ -65,12 +103,16 @@ Example Playbook
 Testing
 -------
 
-To test the role you need [molecule](http://molecule.readthedocs.io/en/latest/).
+To test the role you need
+[molecule](http://molecule.readthedocs.io/en/latest/). And vagrant installed
+with VirtualBox.
 
-And vagrant installed with VirtualBox.
+There are too scenarios depending on the posible database backend, to test both
+of them use:
 
 ```bash
-molecule test
+molecule test -s default
+molecule test -s postgres
 ```
 
 License

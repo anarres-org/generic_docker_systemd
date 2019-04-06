@@ -10,7 +10,7 @@
     ports: "{{ db_config_port }}:3306"
     volumes: "{{ docker_service_db_volume_name }}:/var/lib/mysql"
     env:
-      MYSQL_ROOT_PASSWORD: "{{ db_pass }}"
+      'MYSQL_ROOT_PASSWORD': "{{ db_pass }}"
   when: db_type == 'mariadb'
 
 - name: Wait for configuration database container to start
@@ -46,13 +46,6 @@
 
 ## Postgres
 
-- name: Create data directory
-  file:
-    path: "{{ docker_service_directory_db }}"
-    state: directory
-    owner: "{{ user_uid_1000 }}"
-    group: "{{ group_gid_1000 }}"
-
 - name: Preconfigure database
   docker_container:
     name: db-config
@@ -61,9 +54,9 @@
     ports: "{{ db_config_port }}:5432"
     volumes: "{{ docker_service_directory_db }}:/var/lib/postgresql/data"
     env:
-      POSTGRES_PASSWORD: "{{ db_pass }}"
-      POSTGRES_USER: "{{ db_pass }}"
-      POSTGRES_DB: "{{ db_pass }}"
+      POSTGRES_PASSWORD: "{{ db_user_pass }}"
+      POSTGRES_USER: "{{ db_user }}"
+      POSTGRES_DB: "{{ db_name }}"
   when: db_type == 'postgres'
 
 - name: Wait for configuration database container to start
