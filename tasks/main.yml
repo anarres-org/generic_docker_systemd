@@ -24,6 +24,13 @@
   ignore_errors: true
   when: enable_db and db_type == 'mariadb'
 
+- name: Create database data directory
+  file:
+    path: "{{ docker_service_directory_db }}"
+    state: directory
+  notify: Setup database
+  when: enable_db and db_type == 'postgres'
+
 - name: Create service data volume
   docker_volume:
     name: "{{ docker_service_volume_name }}"
