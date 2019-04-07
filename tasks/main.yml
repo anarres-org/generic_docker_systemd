@@ -32,7 +32,7 @@
 
 - name: Setup database
   include_tasks: db-setup.yml
-  when: database_postgres_conf is defined and  database_postgres_conf.stat.exists
+  when: database_postgres_conf is defined and not database_postgres_conf.stat.exists
 
 - name: Create service data volume
   docker_volume:
