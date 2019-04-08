@@ -32,7 +32,7 @@
 
 - name: Setup database
   include_tasks: db-setup.yml
-  when: not database_postgres_conf.stat.exists
+  when: enable_db and db_type == 'postgres' and not database_postgres_conf.stat.exists
 
 - name: Create service data volume
   docker_volume:
