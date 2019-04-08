@@ -24,7 +24,7 @@
   ignore_errors: true
   when: enable_db and db_type == 'mariadb'
 
-- name: Check if postgres is all ready configured
+- name: Check if postgres is already configured
   stat:
     path: "{{ docker_service_directory_db }}/postgresql.conf"
   register: database_postgres_conf
