@@ -26,6 +26,9 @@ Role Variables
    This is useful to be able to restart all of them with one command:
    `systemctl restart docker.*`
 * `service_name`: Name of the systemd service.
+* `service_pre_command`: Command to run before the `docker_command` one. Pull
+  or build generally. Add `-` at the beginning of the command if you don't want
+  the service start to fail if this command fails.
 * `service_db_name`: Name of the systemd DB service.
 * `docker_network_name`: Name of the docker network for the service and DB.
 * `docker_image`: Name of the docker image to launch as a service.
