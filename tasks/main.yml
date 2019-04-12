@@ -4,6 +4,7 @@
 - name: Pull docker service image
   docker_image:
     name: "{{ docker_image }}"
+  when: method == 'pull'
 
 - name: Pull docker database image
   docker_image:

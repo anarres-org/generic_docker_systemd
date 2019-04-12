@@ -7,6 +7,7 @@ create_network: "{{ enable_db }}"
 create_volume: true
 
 docker_service_prefix: docker.
+method: pull
 service_pre_command: "/usr/bin/docker pull {{ docker_image }}"
 docker_network_name: "{{ service_name }}"
 service_db_name: "{{ service_name }}-db"
