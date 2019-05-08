@@ -9,9 +9,9 @@ Requirements
 * Pip installed on host
 * Docker installed on the host
 * `python-mysqldb`
-* If you use postgres as a database (not the default mariadb), create a
-  directory of the database data owned by the user with **gid** and **uid**
-  **1000**. Specify it in the variable `docker_service_directory_db`.
+* If you use postgres or mongo as a database (not the default mariadb), create
+   adirectory of the database data owned by the user with **gid** and **uid**
+   **1000**. Specify it in the variable `docker_service_directory_db`.
 
 Role Variables
 --------------
@@ -38,8 +38,8 @@ Role Variables
 * `docker_command`: Docker command used to launch the container.
 * `docker_service_volume_name`: Name of the docker volume for the service.
 * `docker_service_db_volume_name`: Name of the docker volume for the DB.
-* `db_type`: `mariadb` (default) or `postgres`.
-* `docker_service_directory_db`: Path for the postgres db data.
+* `db_type`: `mariadb` (default), `postgres` or mongo.
+* `docker_service_directory_db`: Path for the postgres/mongo db data.
 * `db_pass`: Root password for the DB.
 * `db_user_pass`: User password for the DB.
 * `db_config_port`: Host port that will be binded for the DB setup.
@@ -93,9 +93,45 @@ required directory:
   hosts: all
   vars:
     db_type: postgres
+    docker_db_image: postgres:11
     docker_service_directory_db: /data/hello-world/db
     db_user_pass: 'changeme'
     db_config_port: 5432
+    db_name: hello-world
+    db_user: hello-world
+    service_name: hello-world
+    docker_image: hello-world
+    docker_command: /usr/bin/docker run --rm -i --name "{{ service_name }}" "{{ docker_image }}"
+  roles:
+    - role: generic_docker_systemd
+```
+
+If you are using mongo, you can use the following task to create the
+required directory:
+
+```yaml
+- name: '[Pretask] Create directories'
+  hosts: all
+  vars:
+    db_type: mongo
+    docker_service_directory_db: /data/hello-world/db
+  tasks:
+    - name: Create db data directory
+      file:
+        path: "{{ docker_service_directory_db }}"
+        state: directory
+        owner: [user with uid 1000]
+        group: [group with gid 1000]
+        mode: 0700
+
+- name: Deploy the docker image managed by a systemd service
+  hosts: all
+  vars:
+    db_type: mongo
+    docker_db_image: mongo:4
+    docker_service_directory_db: /data/hello-world/db
+    db_user_pass: 'changeme'
+    db_config_port: 27017
     db_name: hello-world
     db_user: hello-world
     service_name: hello-world
@@ -118,6 +154,7 @@ of them use:
 ```bash
 molecule test -s default
 molecule test -s postgres
+molecule test -s mongo
 ```
 
 License

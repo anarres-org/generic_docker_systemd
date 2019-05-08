@@ -31,9 +31,16 @@
   register: database_postgres_conf
   when: enable_db and db_type == 'postgres'
 
+- name: Check if mongodb is already configured
+  stat:
+    path: "{{ docker_service_directory_db }}/storage.bson"
+  register: database_mongo_conf
+  when: enable_db and db_type == 'mongo'
+
 - name: Setup database
   include_tasks: db-setup.yml
-  when: enable_db and db_type == 'postgres' and not database_postgres_conf.stat.exists
+  when:
+    - enable_db and (( db_type == 'postgres' and not database_postgres_conf.stat.exists ) or (db_type == 'mongo' and not database_mongo_conf.stat.exists ))
 
 - name: Create service data volume
   docker_volume:
