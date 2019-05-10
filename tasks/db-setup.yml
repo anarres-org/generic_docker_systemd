@@ -86,6 +86,17 @@
     port: "{{ db_config_port }}"
   when: db_type == 'mongo'
 
+- name: Create database and user
+  mongodb_user:
+    login_host: localhost
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_user_pass }}"
+    database: "{{ db_name }}"
+    name: "{{ db_user }}"
+    password: "{{ db_user_pass }}"
+    state: present
+  when: db_type == 'mongo'
+
 ## Then for both cases
 
 - name: Stop and remove configuration container
