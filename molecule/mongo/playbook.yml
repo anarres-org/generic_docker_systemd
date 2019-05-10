@@ -10,7 +10,12 @@
         state: present
       with_items:
         - python-pip
-        - python-mysqldb
+    - name: Install required pip packages
+      pip:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - pymongo
 
 # From: https://git.digitales.cslabrecha.org/ansible-roles/docker
 - name: '[Pretask] Install docker'

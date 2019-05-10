@@ -8,7 +8,8 @@ Requirements
 
 * Pip installed on host
 * Docker installed on the host
-* `python-mysqldb`
+* `python-mysqldb` if you use the `mariadb` or `postgres` db type.
+* `pymongo` if you use the `mongo` db type.
 * If you use postgres or mongo as a database (not the default mariadb), create
    adirectory of the database data owned by the user with **gid** and **uid**
    **1000**. Specify it in the variable `docker_service_directory_db`.

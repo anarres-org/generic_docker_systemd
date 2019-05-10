@@ -90,6 +90,7 @@
   mongodb_user:
     login_host: localhost
     login_user: "{{ db_user }}"
+    login_port: "{{ db_config_port }}"
     login_password: "{{ db_user_pass }}"
     database: "{{ db_name }}"
     name: "{{ db_user }}"
