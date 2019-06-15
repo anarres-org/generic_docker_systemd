@@ -12,7 +12,6 @@ service_pre_command: "/usr/bin/docker pull {{ docker_image }}"
 docker_network_name: "{{ service_name }}"
 service_db_name: "{{ service_name }}-db"
 docker_service_volume_name: "{{ service_name }}"
-docker_service_db_volume_name: "{{ service_db_name }}"
 
 docker_image:
 docker_db_image: mariadb:10.3
@@ -33,3 +32,5 @@ db_user_pass: "{{ db_pass }}"
 db_config_port: 3306
 db_name:
 db_user:
+
+db_setup_required: (db_type == 'mariadb' and not database_mariadb_conf.stat.exists ) or (db_type == 'postrgres' and not database_postgres_conf.stat.exists ) or (db_type == 'mongo' and not database_mongo_conf.stat.exists )

@@ -10,19 +10,17 @@ Requirements
 * Docker installed on the host
 * `python-mysqldb` if you use the `mariadb` or `postgres` db type.
 * `pymongo` if you use the `mongo` db type.
-* If you use postgres or mongo as a database (not the default mariadb), create
-   adirectory of the database data owned by the user with **gid** and **uid**
+* A directory for the database data owned by the user with **gid** and **uid**
    **1000**. Specify it in the variable `docker_service_directory_db`.
 
 Role Variables
 --------------
 
 * `enable_db`: Boolean to enable database container deployment.
-* `create_user_and_db`: Boolean to enable the creation of a DB and a user.
+* `create_user_and_db`: Boolean to enable the creation of a DB and a user. Only
+  works with `mariadb` and `mongo` database backends.
 * `create_network`: Boolean to enable docker network creation for the service
    and the DB.
-* `create_volume`: Boolean to enable the creation of a volume for the service
-   container.
 * `docker_service_prefix`: Prefix for the in-docker services.
    This is useful to be able to restart all of them with one command:
    `systemctl restart docker.*`
@@ -30,7 +28,7 @@ Role Variables
 * `method`: `pull` or `build` to get the docker image.
 * `service_pre_command`: Command to run before the `docker_command` one. Pull
   or build generally. Add `-` at the beginning of the command if you don't want
-  the service start to fail if this command fails.
+  the service start up to fail if this command fails.
 * `service_db_name`: Name of the systemd DB service.
 * `docker_network_name`: Name of the docker network for the service and DB.
 * `docker_image`: Name of the docker image to launch as a service.
@@ -38,7 +36,6 @@ Role Variables
   Use the debian based one for postgres.
 * `docker_command`: Docker command used to launch the container.
 * `docker_service_volume_name`: Name of the docker volume for the service.
-* `docker_service_db_volume_name`: Name of the docker volume for the DB.
 * `db_type`: `mariadb` (default), `postgres` or mongo.
 * `docker_service_directory_db`: Path for the postgres/mongo db data.
 * `db_pass`: Root password for the DB.
@@ -56,6 +53,20 @@ Example Playbook
 ----------------
 
 ```yaml
+- name: '[Pretask] Create directories'
+  hosts: all
+  vars:
+    db_type: postgres
+    docker_service_directory_db: /data/hello-world/db
+  tasks:
+    - name: Create db data directory
+      file:
+        path: "{{ docker_service_directory_db }}"
+        state: directory
+        owner: [user with uid 1000]
+        group: [group with gid 1000]
+        mode: 0700
+
 - name: Deploy the docker image managed by a systemd service
   hosts: all
   vars:
@@ -72,8 +83,7 @@ Example Playbook
     - role: generic_docker_systemd
 ```
 
-If you are using postgres, you can use the following task to create the
-required directory:
+If you are using postgres:
 
 ```yaml
 - name: '[Pretask] Create directories'
@@ -107,8 +117,7 @@ required directory:
     - role: generic_docker_systemd
 ```
 
-If you are using mongo, you can use the following task to create the
-required directory:
+If you are using mongo:
 
 ```yaml
 - name: '[Pretask] Create directories'

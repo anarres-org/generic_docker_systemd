@@ -6,9 +6,10 @@
   docker_container:
     name: db-config
     image: "{{ docker_db_image }}"
+    user: 1000:1000
     state: started
     ports: "{{ db_config_port }}:3306"
-    volumes: "{{ docker_service_db_volume_name }}:/var/lib/mysql"
+    volumes: "{{ docker_service_directory_db }}:/var/lib/mysql"
     env:
       'MYSQL_ROOT_PASSWORD': "{{ db_pass }}"
   when: db_type == 'mariadb'
@@ -96,7 +97,7 @@
     name: "{{ db_user }}"
     password: "{{ db_user_pass }}"
     state: present
-  when: db_type == 'mongo'
+  when: create_user_and_db and db_type == 'mongo'
 
 ## Then for both cases
 
