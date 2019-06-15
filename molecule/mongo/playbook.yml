@@ -12,10 +12,8 @@
         - python-pip
     - name: Install required pip packages
       pip:
-        name: "{{ item }}"
+        name: pymongo
         state: present
-      with_items:
-        - pymongo
 
 # From: https://git.digitales.cslabrecha.org/ansible-roles/docker
 - name: '[Pretask] Install docker'
