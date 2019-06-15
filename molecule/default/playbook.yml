@@ -18,12 +18,26 @@
   roles:
     - role: docker
 
+- name: '[Pretask] Create directories'
+  hosts: all
+  vars:
+    docker_service_directory_db: /data/dummy/db
+  tasks:
+    - name: Create db data directory
+      file:
+        path: "{{ docker_service_directory_db }}"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: 0700
+
 - name: Deploy the docker image managed by a systemd service
   hosts: all
   vars:
     docker_image: nginx:alpine
     docker_db_image: mariadb:10.3
     service_name: dummy
+    docker_service_directory_db: /data/dummy/db
     docker_command: |
       /usr/bin/docker run --rm --name {{ service_name }} \
       -p 8080:80 \
