@@ -4,11 +4,13 @@
 - name: Pull docker service image
   docker_image:
     name: "{{ docker_image }}"
+    source: pull
   when: method == 'pull'
 
 - name: Pull docker database image
   docker_image:
     name: "{{ docker_db_image }}"
+    source: pull
   when: enable_db
 
 - name: Create a docker network for the service and the database
