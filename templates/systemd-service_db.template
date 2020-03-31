@@ -2,7 +2,7 @@
 Description={{ service_db_name }}
 After=docker.service
 Wants=docker.service
- 
+
 [Service]
 TimeoutStartSec=infinity
 TimeoutStopSec=15
@@ -15,24 +15,33 @@ ExecStartPre=/usr/bin/docker pull {{ docker_db_image }}
 {%if db_type == 'postgres' %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 -v {{ docker_service_directory_db }}:/var/lib/postgresql/data \
+{% if db_expose_port is defined %}
+-p {{ db_expose_port }}:5432 \
+{% endif %}
 --user "1000:1000" \
 --network {{ docker_network_name }} \
 {{ docker_db_image }}
 {%elif db_type == 'mongo' %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 -v {{ docker_service_directory_db }}:/data/db \
+{% if db_expose_port is defined %}
+-p {{ db_expose_port }}:27017 \
+{% endif %}
 --user "1000:1000" \
 --network {{ docker_network_name }} \
 {{ docker_db_image }} --smallfiles --bind_ip ::,0.0.0.0
 {% else %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 -v {{ docker_service_directory_db }}:/var/lib/mysql \
+{% if db_expose_port is defined %}
+-p {{ db_expose_port }}:3306 \
+{% endif %}
 --user "1000:1000" \
 --network {{ docker_network_name }} \
 {{ docker_db_image }}
 {% endif %}
 
 ExecStop=/usr/bin/docker stop {{ service_db_name }}
- 
+
 [Install]
 WantedBy=multi-user.target

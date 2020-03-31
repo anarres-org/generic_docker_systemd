@@ -43,6 +43,7 @@ Role Variables
 * `db_config_port`: Host port that will be binded for the DB setup.
 * `db_name`: Name of the DB that will be created.
 * `db_user`: Name of the user that will own the created DB.
+* `db_expose_port`: Port to be exposed of the db.
 
 Dependencies
 ------------
