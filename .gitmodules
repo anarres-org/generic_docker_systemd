@@ -1,3 +1,3 @@
 [submodule "roles/docker"]
 	path = roles/docker
-	url = https://git.digitales.cslabrecha.org/ansible-roles/docker
+	url = https://github.com/anarres-org/docker.git
