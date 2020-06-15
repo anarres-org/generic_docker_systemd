@@ -1,0 +1,24 @@
+[Unit]
+Description={{ service_redis_name }}
+After=docker.service
+Wants=docker.service
+
+[Service]
+TimeoutStartSec=infinity
+TimeoutStopSec=15
+Restart=always
+RestartSec=2s
+ExecStartPre=-/usr/bin/docker stop {{ service_redis_name }}
+ExecStartPre=-/usr/bin/docker rm {{ service_redis_name }}
+ExecStartPre=/usr/bin/docker pull {{ docker_redis_image }}
+
+ExecStart=/usr/bin/docker run --rm --name {{ service_redis_name }} \
+    -v {{ docker_service_directory_redis }}:/data \
+    --user "1000:1000" \
+    --network {{ docker_network_name }} \
+    {{ docker_redis_image }}
+
+ExecStop=/usr/bin/docker stop {{ service_redis_name }}
+
+[Install]
+WantedBy=multi-user.target

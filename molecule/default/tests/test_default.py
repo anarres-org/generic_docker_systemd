@@ -27,6 +27,12 @@ def test_dummy_db_service(host):
     assert dummy_db.is_running
 
 
+def test_dummy_redis_service(host):
+    dummy_redis = host.service("docker.dummy-redis.service")
+    assert dummy_redis.is_enabled
+    assert dummy_redis.is_running
+
+
 def test_dummy_service(host):
     dummy = host.service("docker.dummy.service")
     assert dummy.is_enabled

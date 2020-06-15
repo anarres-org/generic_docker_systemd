@@ -65,6 +65,15 @@
   when: enable_db
   notify: Enable systemd database service and start it
 
+- name: Create systemd redis service
+  template:
+    src: systemd-service_redis.template
+    dest: "/etc/systemd/system/{{ docker_service_prefix }}{{ service_redis_name }}.service"
+    owner: root
+    group: root
+  when: enable_redis
+  notify: Enable systemd redis service and start it
+
 - name: Create systemd service
   template:
     src: systemd-service.template

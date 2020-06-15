@@ -17,6 +17,7 @@ Role Variables
 --------------
 
 * `enable_db`: Boolean to enable database container deployment.
+* `enable_redis`: Boolean to enable Redis container deployment.
 * `create_user_and_db`: Boolean to enable the creation of a DB and a user. Only
   works with `mariadb` and `mongo` database backends.
 * `create_network`: Boolean to enable docker network creation for the service
@@ -34,6 +35,8 @@ Role Variables
 * `docker_image`: Name of the docker image to launch as a service.
 * `docker_db_image`: Name of the docker image to launch as the service's DB.
   Use the debian based one for postgres.
+* `docker_redis_image`: Name of the docker image to launch as the service's
+  Redis.
 * `docker_command`: Docker command used to launch the container.
 * `docker_service_volume_name`: Name of the docker volume for the service.
 * `db_type`: `mariadb` (default), `postgres` or mongo.
@@ -44,6 +47,7 @@ Role Variables
 * `db_name`: Name of the DB that will be created.
 * `db_user`: Name of the user that will own the created DB.
 * `db_expose_port`: Port to be exposed of the db.
+* `docker_service_directory_redis`: Path for the Redis data.
 
 Dependencies
 ------------

@@ -38,6 +38,8 @@
     docker_db_image: mariadb:10.3
     service_name: dummy
     docker_service_directory_db: /data/dummy/db
+    enable_redis: true
+    docker_service_directory_redis: /data/dummy/redis
     docker_command: |
       /usr/bin/docker run --rm --name {{ service_name }} \
       -p 8080:80 \

@@ -6,6 +6,10 @@ Wants=docker.service
 After={{ docker_service_prefix }}{{ service_db_name }}.service
 Wants={{ docker_service_prefix }}{{ service_db_name }}.service
 {% endif %}
+{% if enable_redis == true %}
+After={{ docker_service_prefix }}{{ service_redis_name }}.service
+Wants={{ docker_service_prefix }}{{ service_redis_name }}.service
+{% endif %}
 
 [Service]
 TimeoutStartSec=infinity
