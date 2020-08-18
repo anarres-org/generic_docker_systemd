@@ -12,6 +12,13 @@
     daemon_reload: yes
     state: started
 
+- name: Enable systemd redis service and start it
+  systemd:
+    name: "{{ docker_service_prefix }}{{ service_redis_name }}"
+    enabled: yes
+    daemon_reload: yes
+    state: started
+
 - name: Enable systemd service and start it
   systemd:
     name: "{{ docker_service_prefix }}{{ service_name }}"
