@@ -29,7 +29,7 @@ ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 {% endif %}
 --user "1000:1000" \
 --network {{ docker_network_name }} \
-{{ docker_db_image }} --smallfiles --bind_ip ::,0.0.0.0
+{{ docker_db_image }} --bind_ip ::,0.0.0.0
 {% else %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 -v {{ docker_service_directory_db }}:/var/lib/mysql \
