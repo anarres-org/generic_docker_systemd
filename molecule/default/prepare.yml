@@ -19,6 +19,7 @@
 
 - name: Install dependencies
   hosts: all
+  become: true
   gather_facts: false
   tasks:
     - name: Install apt dependencies
