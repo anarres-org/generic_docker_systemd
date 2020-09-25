@@ -1,10 +1,8 @@
-Generic docker systemd service deploy
-=====================================
+# Generic docker systemd service deploy
 
 Creates a systemd unit file that manages a docker image.
 
-Requirements
-------------
+## Requirements
 
 * Pip installed on host
 * Docker installed on the host
@@ -13,8 +11,7 @@ Requirements
 * A directory for the database data owned by the user with **gid** and **uid**
    **1000**. Specify it in the variable `docker_service_directory_db`.
 
-Role Variables
---------------
+## Role Variables
 
 * `enable_db`: Boolean to enable database container deployment.
 * `enable_redis`: Boolean to enable Redis container deployment.
@@ -49,13 +46,11 @@ Role Variables
 * `db_expose_port`: Port to be exposed of the db.
 * `docker_service_directory_redis`: Path for the Redis data.
 
-Dependencies
-------------
+## Dependencies
 
 None.
 
-Example Playbook
-----------------
+## Example Playbook
 
 ```yaml
 - name: '[Pretask] Create directories'
@@ -156,8 +151,7 @@ If you are using mongo:
     - role: generic_docker_systemd
 ```
 
-Testing
--------
+## Testing
 
 To test the role you need
 [molecule](http://molecule.readthedocs.io/en/latest/). And vagrant installed
@@ -172,12 +166,10 @@ molecule test -s postgres
 molecule test -s mongo
 ```
 
-License
--------
+## License
 
 GPLv3
 
-Author Information
-------------------
+## Author Information
 
-m0wer (at) autistici.org
+m0wer: m0wer (at) autistici (dot) org
