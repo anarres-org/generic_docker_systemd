@@ -27,6 +27,7 @@ provisioner:
   options:
     become: true
     extra-vars:
+      ansible_python_interpreter: /usr/bin/python3
       testing: true
       docker_registry_mirror: http://172.16.100.1:5000
 scenario:
