@@ -16,3 +16,14 @@
         )
       become: true
       changed_when: false
+
+- name: Install dependencies
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install apt dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+        with_items:
+          - python3-pip
