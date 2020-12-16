@@ -8,6 +8,7 @@ TimeoutStartSec=infinity
 TimeoutStopSec=15
 Restart=always
 RestartSec=2s
+
 ExecStartPre=-/usr/bin/docker stop {{ service_redis_name }}
 ExecStartPre=-/usr/bin/docker rm {{ service_redis_name }}
 ExecStartPre=/usr/bin/docker pull {{ docker_redis_image }}
