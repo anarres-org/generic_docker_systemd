@@ -19,7 +19,9 @@ RestartSec=2s
 
 ExecStartPre=-/usr/bin/docker stop {{ service_name }}
 ExecStartPre=-/usr/bin/docker rm {{ service_name }}
-ExecStartPre={{ service_pre_command }}
+{% if service_pre_command is defined %}
+    ExecStartPre={{ service_pre_command }}
+{% end if %}
 
 ExecStart={{ docker_command }}
 ExecStop=/usr/bin/docker stop {{ service_name }}
