@@ -9,9 +9,9 @@ TimeoutStopSec=15
 Restart=always
 RestartSec=2s
 
+ExecStartPre=-/usr/bin/docker stop {{ service_redis_name }}
+ExecStartPre=-/usr/bin/docker rm {{ service_redis_name }}
 {% if service_pre_command_redis is defined %}
-    ExecStartPre=-/usr/bin/docker stop {{ service_redis_name }}
-    ExecStartPre=-/usr/bin/docker rm {{ service_redis_name }}
     ExecStartPre={{ service_pre_command_redis }}
 {% end if %}
 
