@@ -8,9 +8,12 @@ TimeoutStartSec=infinity
 TimeoutStopSec=15
 Restart=always
 RestartSec=2s
+
 ExecStartPre=-/usr/bin/docker stop {{ service_db_name }}
 ExecStartPre=-/usr/bin/docker rm {{ service_db_name }}
-ExecStartPre=/usr/bin/docker pull {{ docker_db_image }}
+{% if service_pre_command_db is defined %}
+    ExecStartPre={{ service_pre_command_db }}
+{% end if %}
 
 {%if db_type == 'postgres' %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \

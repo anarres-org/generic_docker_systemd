@@ -9,7 +9,7 @@ create_volume: true
 
 docker_service_prefix: docker.
 method: pull
-service_pre_command: "/usr/bin/docker pull {{ docker_image }}"
+# service_pre_command: /usr/bin/docker pull {{ docker_image }}"
 docker_network_name: "{{ service_name }}"
 service_db_name: "{{ service_name }}-db"
 service_redis_name: "{{ service_name }}-redis"
@@ -23,6 +23,8 @@ docker_command: |
   -v docker_service_volume_name:/data \
   --network "{{ service_name }}" \
   "{{ docker_image }}"
+
+# service_pre_command_db: /usr/bin/docker pull {{ docker_db_image }}"
 
 ## db
 
@@ -41,3 +43,5 @@ db_setup_required: (db_type == 'mariadb' and not database_mariadb_conf.stat.exis
 ## Redis
 
 docker_service_directory_redis:
+
+# service_pre_command_redis: /usr/bin/docker pull {{ docker_redis_image }}"
