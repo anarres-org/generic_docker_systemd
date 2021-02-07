@@ -13,7 +13,7 @@ ExecStartPre=-/usr/bin/docker stop {{ service_redis_name }}
 ExecStartPre=-/usr/bin/docker rm {{ service_redis_name }}
 {% if service_pre_command_redis is defined %}
     ExecStartPre={{ service_pre_command_redis }}
-{% end if %}
+{% endif %}
 
 ExecStart=/usr/bin/docker run --rm --name {{ service_redis_name }} \
     -v {{ docker_service_directory_redis }}:/data \

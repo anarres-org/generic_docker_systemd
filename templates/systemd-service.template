@@ -21,7 +21,7 @@ ExecStartPre=-/usr/bin/docker stop {{ service_name }}
 ExecStartPre=-/usr/bin/docker rm {{ service_name }}
 {% if service_pre_command is defined %}
     ExecStartPre={{ service_pre_command }}
-{% end if %}
+{% endif %}
 
 ExecStart={{ docker_command }}
 ExecStop=/usr/bin/docker stop {{ service_name }}

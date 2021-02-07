@@ -13,7 +13,7 @@ ExecStartPre=-/usr/bin/docker stop {{ service_db_name }}
 ExecStartPre=-/usr/bin/docker rm {{ service_db_name }}
 {% if service_pre_command_db is defined %}
     ExecStartPre={{ service_pre_command_db }}
-{% end if %}
+{% endif %}
 
 {%if db_type == 'postgres' %}
 ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
