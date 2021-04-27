@@ -1,0 +1,8 @@
+-r requirements.in
+ansible-lint
+commitizen
+flake8
+molecule[docker]
+pre-commit
+testinfra
+yamllint

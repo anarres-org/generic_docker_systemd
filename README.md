@@ -2,14 +2,40 @@
 
 Creates a systemd unit file that manages a docker image.
 
+## Cloning this repository
+
+Since this repository has
+[git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules), after
+cloning the repository you'll have to
+
+```bash
+git submodule init
+git submodule update
+```
+
+Alternatively you can clone it using
+
+```bash
+git clone --recurse-submodules -j8 {repo_url}
+```
+
+## Compatibility
+
+These are the tested GNU/Linux distributions. Maybe it works on some other
+distributions too or just requieres a few changes.
+
+* [Debian](https://www.debian.org/)
+  * buster
+* [Ubuntu](https://ubuntu.com/)
+  * latest
+
 ## Requirements
 
-* Pip installed on host
-* Docker installed on the host
-* `python-mysqldb` if you use the `mariadb` or `postgres` db type.
-* `pymongo` if you use the `mongo` db type.
-* A directory for the database data owned by the user with **gid** and **uid**
-   **1000**. Specify it in the variable `docker_service_directory_db`.
+In your local machine:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Role Variables
 
@@ -48,42 +74,10 @@ Creates a systemd unit file that manages a docker image.
 
 ## Dependencies
 
-None.
+`sudo` and `python` in the target host(s). Also  a directory for the database data owned by the user with **gid** and **uid**
+   **1000**. Specify it in the variable `docker_service_directory_db`.
 
 ## Example Playbook
-
-```yaml
-- name: '[Pretask] Create directories'
-  hosts: all
-  vars:
-    db_type: postgres
-    docker_service_directory_db: /data/hello-world/db
-  tasks:
-    - name: Create db data directory
-      file:
-        path: "{{ docker_service_directory_db }}"
-        state: directory
-        owner: [user with uid 1000]
-        group: [group with gid 1000]
-        mode: 0700
-
-- name: Deploy the docker image managed by a systemd service
-  hosts: all
-  vars:
-    db_type: mariadb
-    db_pass: 'changeme'
-    db_user_pass: 'changeme'
-    db_config_port: 3306
-    db_name: hello-world
-    db_user: hello-world
-    service_name: hello-world
-    docker_image: hello-world
-    docker_command: /usr/bin/docker run --rm -i --name "{{ service_name }}" "{{ docker_image }}"
-  roles:
-    - role: generic_docker_systemd
-```
-
-If you are using postgres:
 
 ```yaml
 - name: '[Pretask] Create directories'
@@ -153,9 +147,9 @@ If you are using mongo:
 
 ## Testing
 
-To test the role you need
-[molecule](http://molecule.readthedocs.io/en/latest/). And vagrant installed
-with VirtualBox.
+To test the role you need [molecule](http://molecule.readthedocs.io/en/latest/),
+**vagrant**, **virtualbox** and some python requirements that can be installed wwith
+`pip install -r requirements-dev.txt`.
 
 There are too scenarios depending on the posible database backend, to test both
 of them use:
@@ -166,10 +160,14 @@ molecule test -s postgres
 molecule test -s mongo
 ```
 
+There is more documentation about the installation and configuration of the
+required tools at
+[Testing - Anarres documentation](https://anarres-org.github.io/anarres/testing/).
+
 ## License
 
 GPLv3
 
 ## Author Information
 
-m0wer: m0wer (at) autistici (dot) org
+* m0wer: m0wer (at) autistici (dot) org

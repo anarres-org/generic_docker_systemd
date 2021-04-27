@@ -1,0 +1,50 @@
+---
+name: Molecule test
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: 34 3 * * 5
+
+jobs:
+  molecule:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Setup Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Update test dependencies
+        run: make update-test
+      - name: Run Molecule tests
+        run: molecule --debug test --scenario-name ci
+        env:
+          ANSIBLE_CALLBACK_WHITELIST: profile_tasks
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add requirements.txt requirements-dev.txt
+          git diff-index --quiet HEAD \
+            || git commit -m "build: update python dependencies"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

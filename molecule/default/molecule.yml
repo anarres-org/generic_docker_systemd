@@ -13,25 +13,22 @@ platforms:
         auto_config: true
         ip: 172.16.100.12
         type: static
+    config_options:
+      vbguest.auto_update: false
     instance_raw_config_args:
       - "vm.synced_folder '.', '/vagrant', disabled: true"
     groups:
       - anarres
 lint: |
   set -e
-  yamllint .
-  ansible-lint --exclude roles/ --exclude molecule/ --exclude library/
+  yamllint -c .yamllint .
+  ansible-lint --exclude molecule/ --exclude library/ --exclude .github/
   flake8 --exclude roles,molecule,library
 provisioner:
   name: ansible
   options:
     become: true
-    extra-vars:
-      ansible_python_interpreter: /usr/bin/python3
-      testing: true
-      docker_registry_mirror: http://172.16.100.1:5000
-scenario:
-  name: default
+    extra-vars: "{'testing': true, domain: 'anarres.local'}"
 verifier:
   name: testinfra
   options:
