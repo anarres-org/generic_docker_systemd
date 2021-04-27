@@ -42,6 +42,5 @@ db_setup_required: (db_type == 'mariadb' and not database_mariadb_conf.stat.exis
 
 ## Redis
 
-docker_service_directory_redis:
-
 # service_pre_command_redis: /usr/bin/docker pull {{ docker_redis_image }}"
+docker_service_directory_redis:
