@@ -17,8 +17,8 @@
         name: "{{ item }}"
         state: present
       with_items:
-        - python-pip
-        - python-mysqldb
+        - python3-pip
+        - python3-mysqldb
 
 - name: '[Pretask] Install docker'
   hosts: all
