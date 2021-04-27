@@ -1,2 +1,4 @@
 ansible
 docker
+mysqlclient
+pymongo
