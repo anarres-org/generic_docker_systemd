@@ -4,6 +4,7 @@
 
 - name: Preconfigure database
   docker_container:
+    container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
     user: 1000:1000
@@ -49,6 +50,7 @@
 
 - name: Preconfigure database
   docker_container:
+    container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
     user: 1000:1000
@@ -70,6 +72,7 @@
 
 - name: Preconfigure database
   docker_container:
+    container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
     user: 1000:1000
@@ -103,5 +106,6 @@
 
 - name: Stop and remove configuration container
   docker_container:
+    container_default_behavior: compatibility
     name: db-config
     state: absent
