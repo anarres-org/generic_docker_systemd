@@ -34,8 +34,8 @@
       file:
         path: "{{ docker_service_directory_db }}"
         state: directory
-        owner: vagrant
-        group: vagrant
+        owner: "{{ lookup('env','USER') }}"
+        group: "{{ lookup('env','USER') }}"
         mode: 0700
 
 - name: Deploy the docker image managed by a systemd service
