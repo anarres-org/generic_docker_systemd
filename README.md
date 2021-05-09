@@ -98,7 +98,7 @@ pip install -r requirements.txt
   hosts: all
   vars:
     db_type: postgres
-    docker_db_image: postgres:11
+    docker_db_image: postgres
     docker_service_directory_db: /data/hello-world/db
     db_user_pass: 'changeme'
     db_config_port: 5432
@@ -132,7 +132,7 @@ If you are using mongo:
   hosts: all
   vars:
     db_type: mongo
-    docker_db_image: mongo:4
+    docker_db_image: mongo
     docker_service_directory_db: /data/hello-world/db
     db_user_pass: 'changeme'
     db_config_port: 27017

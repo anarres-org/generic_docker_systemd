@@ -42,7 +42,7 @@
   hosts: all
   vars:
     docker_image: nginx:alpine
-    docker_db_image: mariadb:10.3
+    docker_db_image: mariadb
     service_name: dummy
     docker_service_directory_db: /data/dummy/db
     enable_redis: true

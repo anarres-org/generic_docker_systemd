@@ -1,5 +1,13 @@
 ---
 
+- name: "[Pretask] Update apt cache"
+  hosts: all
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 36000
+
 - name: '[Pretask] Install pip'
   hosts: all
   tasks:
@@ -9,13 +17,12 @@
         name: "{{ item }}"
         state: present
       with_items:
-        - python-pip
+        - python3-pip
     - name: Install required pip packages
       pip:
         name: pymongo
         state: present
 
-# From: https://git.digitales.cslabrecha.org/ansible-roles/docker
 - name: '[Pretask] Install docker'
   hosts: all
   roles:
@@ -39,7 +46,7 @@
   vars:
     docker_image: nginx:alpine
     db_type: mongo
-    docker_db_image: mongo:4
+    docker_db_image: mongo
     service_name: dummy
     docker_service_directory_db: /data/dummy/db
     docker_command: |

@@ -1,5 +1,13 @@
 ---
 
+- name: "[Pretask] Update apt cache"
+  hosts: all
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 36000
+
 - name: '[Pretask] Install pip'
   hosts: all
   tasks:
@@ -9,10 +17,9 @@
         name: "{{ item }}"
         state: present
       with_items:
-        - python-pip
-        - python-mysqldb
+        - python3-pip
+        - python3-mysqldb
 
-# From: https://git.digitales.cslabrecha.org/ansible-roles/docker
 - name: '[Pretask] Install docker'
   hosts: all
   roles:
@@ -36,7 +43,7 @@
   vars:
     docker_image: nginx:alpine
     db_type: postgres
-    docker_db_image: postgres:11
+    docker_db_image: postgres
     service_name: dummy
     docker_service_directory_db: /data/dummy/db
     docker_command: |
