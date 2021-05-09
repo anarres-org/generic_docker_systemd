@@ -17,6 +17,7 @@
 
 - name: Wait for configuration database container to start
   wait_for:
+    timeout: 30
     port: "{{ db_config_port }}"
     search_regex: mysql_native_password
   when: db_type == 'mariadb'
@@ -65,6 +66,7 @@
 
 - name: Wait for configuration database container to start
   wait_for:
+    timeout: 30
     port: "{{ db_config_port }}"
   when: db_type == 'postgres'
 
@@ -87,6 +89,7 @@
 
 - name: Wait for configuration database container to start
   wait_for:
+    timeout: 30
     port: "{{ db_config_port }}"
   when: db_type == 'mongo'
 
