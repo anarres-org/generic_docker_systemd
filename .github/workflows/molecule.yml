@@ -30,12 +30,12 @@ jobs:
             ${{ runner.os }}-pip-
       - name: Update test dependencies
         run: make update-test
-      - name: Run Molecule tests for mariadb
-        run: molecule --debug test --scenario-name ci
-        env:
-          ANSIBLE_CALLBACK_WHITELIST: profile_tasks
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+        #      - name: Run Molecule tests for mariadb
+        #        run: molecule --debug test --scenario-name ci
+        #        env:
+        #          ANSIBLE_CALLBACK_WHITELIST: profile_tasks
+        #          PY_COLORS: '1'
+        #          ANSIBLE_FORCE_COLOR: '1'
       - name: Run Molecule tests for mongo
         run: molecule --debug test --scenario-name mongo-ci
         env:
