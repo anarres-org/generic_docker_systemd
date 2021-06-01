@@ -17,7 +17,7 @@ ExecStartPre=-/usr/bin/docker rm {{ service_redis_name }}
 
 ExecStart=/usr/bin/docker run --rm --name {{ service_redis_name }} \
     -v {{ docker_service_directory_redis }}:/data \
-    --user "{{ uid }}:{{ gid }}" \
+    --user "{{ uid | default(ansible_env['SUDO_USER']) }}:{{ gid | default(ansible_env['SUDO_USER']) }}" \
     --network {{ docker_network_name }} \
     {{ docker_redis_image }}
 

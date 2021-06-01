@@ -21,7 +21,7 @@ ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 {% if db_expose_port is defined %}
 -p {{ db_expose_port }}:5432 \
 {% endif %}
---user "{{ uid }}:{{ gid }}" \
+--user "{{ uid | default(ansible_env['SUDO_USER']) }}:{{ gid | default(ansible_env['SUDO_USER']) }}" \
 --network {{ docker_network_name }} \
 {{ docker_db_image }}
 {%elif db_type == 'mongo' %}
@@ -30,7 +30,7 @@ ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 {% if db_expose_port is defined %}
 -p {{ db_expose_port }}:27017 \
 {% endif %}
---user "{{ uid }}:{{ gid }}" \
+--user "{{ uid | default(ansible_env['SUDO_USER']) }}:{{ gid | default(ansible_env['SUDO_USER']) }}" \
 --network {{ docker_network_name }} \
 {{ docker_db_image }} --bind_ip ::,0.0.0.0
 {% else %}
@@ -39,7 +39,7 @@ ExecStart=/usr/bin/docker run --rm --name {{ service_db_name }} \
 {% if db_expose_port is defined %}
 -p {{ db_expose_port }}:3306 \
 {% endif %}
---user "{{ uid }}:{{ gid }}" \
+--user "{{ uid | default(ansible_env['SUDO_USER']) }}:{{ gid | default(ansible_env['SUDO_USER']) }}" \
 --network {{ docker_network_name }} \
 {{ docker_db_image }}
 {% endif %}
