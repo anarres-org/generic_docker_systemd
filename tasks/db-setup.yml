@@ -19,7 +19,8 @@
   command: docker logs db-config
   register: docker_logs
 
-- debug:
+- name: show docker logs
+  debug:
     msg: "{{ docker_logs.stdout_lines }}"
   when: db_type == 'mariadb'
 
