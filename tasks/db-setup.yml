@@ -15,6 +15,13 @@
       'MYSQL_ROOT_PASSWORD': "{{ db_pass }}"
   when: db_type == 'mariadb'
 
+- name: get docker logs
+  command: docker logs db-config
+  register: docker_logs
+
+- debug:
+  msg: "{{ docker_logs.stdout_lines }}"
+
 - name: Wait for configuration database container to start
   wait_for:
     timeout: 30
