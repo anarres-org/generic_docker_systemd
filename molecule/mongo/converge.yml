@@ -37,8 +37,8 @@
       file:
         path: "{{ docker_service_directory_db }}"
         state: directory
-        owner: "{{ ansible_env['SUDO_USER'] | default(ansible_env['USER']) }}"
-        group: "{{ ansible_env['SUDO_USER'] | default(ansible_env['USER']) }}"
+        owner: "{{ uid }}"
+        group: "{{ gid }}"
         mode: 0700
 
 - name: Deploy the docker image managed by a systemd service

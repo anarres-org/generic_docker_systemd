@@ -7,7 +7,7 @@
     container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
-    user: 1000:1000
+    user: "{{ uid }}:{{ gid }}"
     state: started
     ports: "{{ db_config_port }}:3306"
     volumes: "{{ docker_service_directory_db }}:/var/lib/mysql"
@@ -68,7 +68,7 @@
     container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
-    user: 1000:1000
+    user: "{{ uid }}:{{ gid }}"
     state: started
     ports: "{{ db_config_port }}:5432"
     volumes: "{{ docker_service_directory_db }}:/var/lib/postgresql/data"
@@ -91,7 +91,7 @@
     container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
-    user: 1000:1000
+    user: "{{ uid }}:{{ gid }}"
     state: started
     ports: "{{ db_config_port }}:27017"
     volumes: "{{ docker_service_directory_db }}:/data/db"

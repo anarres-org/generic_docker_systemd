@@ -17,7 +17,7 @@ ExecStartPre=-/usr/bin/docker rm {{ service_redis_name }}
 
 ExecStart=/usr/bin/docker run --rm --name {{ service_redis_name }} \
     -v {{ docker_service_directory_redis }}:/data \
-    --user "1000:1000" \
+    --user "{{ uid }}:{{ gid }}" \
     --network {{ docker_network_name }} \
     {{ docker_redis_image }}
 

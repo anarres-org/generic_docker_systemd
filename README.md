@@ -39,6 +39,8 @@ pip install -r requirements.txt
 
 ## Role Variables
 
+* `uid`: `uid` of the unprivileged user.
+* `gid`: `gid` of the unprivileged user.
 * `enable_db`: Boolean to enable database container deployment.
 * `enable_redis`: Boolean to enable Redis container deployment.
 * `create_user_and_db`: Boolean to enable the creation of a DB and a user. Only
@@ -74,8 +76,10 @@ pip install -r requirements.txt
 
 ## Dependencies
 
-`sudo` and `python` in the target host(s). Also  a directory for the database data owned by the user with **gid** and **uid**
-   **1000**. Specify it in the variable `docker_service_directory_db`.
+`sudo` and `python` in the target host(s). Also  a directory for the database
+data owned by the user with **gid** and **uid** specified in `default/main.yml`
+which are by default the unprivileged user and its main group that `ansible`
+uses. Specify it in the variable `docker_service_directory_db`.
 
 ## Example Playbook
 
@@ -90,8 +94,8 @@ pip install -r requirements.txt
       file:
         path: "{{ docker_service_directory_db }}"
         state: directory
-        owner: [user with uid 1000]
-        group: [group with gid 1000]
+        owner: "{{ uid }}"
+        group: "{{ gid }}"
         mode: 0700
 
 - name: Deploy the docker image managed by a systemd service
@@ -124,8 +128,8 @@ If you are using mongo:
       file:
         path: "{{ docker_service_directory_db }}"
         state: directory
-        owner: [user with uid 1000]
-        group: [group with gid 1000]
+        owner: "{{ uid }}"
+        group: "{{ gid }}"
         mode: 0700
 
 - name: Deploy the docker image managed by a systemd service

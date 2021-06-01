@@ -1,5 +1,7 @@
 ---
 # defaults file for generic_docker_systemd
+uid: "{{ ansible_env['SUDO_USER'] | default(1000) }}"
+gid: "{{ ansible_env['SUDO_USER'] | default(1000) }}"
 
 enable_db: true
 enable_redis: false
