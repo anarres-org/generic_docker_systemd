@@ -20,7 +20,8 @@
   register: docker_logs
 
 - debug:
-  msg: "{{ docker_logs.stdout_lines }}"
+    msg: "{{ docker_logs.stdout_lines }}"
+  when: db_type == 'mariadb'
 
 - name: Wait for configuration database container to start
   wait_for:
