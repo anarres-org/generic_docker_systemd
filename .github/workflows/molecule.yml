@@ -31,7 +31,7 @@ jobs:
       - name: Update test dependencies
         run: make update-test
       - name: Run Molecule tests for mariadb
-        run: molecule --debug converge --scenario-name ci; molecule --debug verify --scenario-name ci; molecule --debug destroy --scenario-name ci
+        run: molecule --debug converge --scenario-name ci; molecule --debug destroy --scenario-name ci
         env:
           ANSIBLE_CALLBACK_WHITELIST: profile_tasks
           PY_COLORS: '1'
