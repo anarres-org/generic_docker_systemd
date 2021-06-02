@@ -7,7 +7,7 @@
     container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
-    user: "{{ uid | default(ansible_env['SUDO_USER']) }}:{{ gid | default(ansible_env['SUDO_USER']) }}"
+    user: "{{ lookup('pipe', 'id -u ' ~ user | default(ansible_env['SUDO_USER'])) }}:{{ lookup('pipe', 'id -g ' ~ group | default(ansible_env['SUDO_USER'])) }}"
     state: started
     ports: "{{ db_config_port }}:3306"
     volumes: "{{ docker_service_directory_db }}:/var/lib/mysql"
@@ -23,6 +23,7 @@
 - name: get docker logs
   command: docker logs db-config
   register: docker_logs
+  changed_when: False
 
 - name: show docker logs
   debug:
@@ -68,7 +69,7 @@
     container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
-    user: "{{ uid | default(ansible_env['SUDO_USER']) }}:{{ gid | default(ansible_env['SUDO_USER']) }}"
+    user: "{{ lookup('pipe', 'id -u ' ~ user | default(ansible_env['SUDO_USER'])) }}:{{ lookup('pipe', 'id -g ' ~ group | default(ansible_env['SUDO_USER'])) }}"
     state: started
     ports: "{{ db_config_port }}:5432"
     volumes: "{{ docker_service_directory_db }}:/var/lib/postgresql/data"
@@ -91,7 +92,7 @@
     container_default_behavior: compatibility
     name: db-config
     image: "{{ docker_db_image }}"
-    user: "{{ uid | default(ansible_env['SUDO_USER']) }}:{{ gid | default(ansible_env['SUDO_USER']) }}"
+    user: "{{ lookup('pipe', 'id -u ' ~ user | default(ansible_env['SUDO_USER'])) }}:{{ lookup('pipe', 'id -g ' ~ group | default(ansible_env['SUDO_USER'])) }}"
     state: started
     ports: "{{ db_config_port }}:27017"
     volumes: "{{ docker_service_directory_db }}:/data/db"
