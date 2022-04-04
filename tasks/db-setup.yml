@@ -11,7 +11,7 @@
     ports: "{{ db_config_port }}:3306"
     volumes: "{{ docker_service_directory_db }}:/var/lib/mysql"
     env:
-      'MYSQL_ROOT_PASSWORD': "{{ db_pass }}"
+      'MARIADB_ROOT_PASSWORD': "{{ db_pass }}"
   when: db_type == 'mariadb'
 
 - name: Wait for configuration database container to start
