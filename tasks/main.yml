@@ -19,8 +19,8 @@
   when: create_network
 
 - name: Check if db is already configured
-  stat:
-    path: "{{ docker_service_directory_db }}/*"
+  find:
+    paths: "{{ docker_service_directory_db }}/"
   register: database_conf
   when: enable_db
 
@@ -28,7 +28,7 @@
   include_tasks: db-setup.yml
   when:
     - enable_db
-    - not database_conf.stat.exists
+    - database_conf.marched == 0
 
 - name: Create service data volume
   docker_volume:
