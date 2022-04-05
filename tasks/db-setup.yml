@@ -12,7 +12,7 @@
     volumes: "{{ docker_service_directory_db }}:/var/lib/mysql"
     env:
       'MYSQL_ROOT_PASSWORD': "{{ db_pass }}"
-      'MYSQL_DATABSE': "{{ db_name }}"
+      'MYSQL_DATABASE': "{{ db_name }}"
       'MYSQL_USER': "{{ db_user }}"
       'MYSQL_PASSWORD': "{{ db_user_pass }}"
   when: db_type == 'mariadb' and create_user_and_db
