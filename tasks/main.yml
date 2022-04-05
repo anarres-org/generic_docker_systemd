@@ -28,7 +28,7 @@
   include_tasks: db-setup.yml
   when:
     - enable_db
-    - database_conf.marched == 0
+    - database_conf.matched == 0
 
 - name: Create service data volume
   docker_volume:
