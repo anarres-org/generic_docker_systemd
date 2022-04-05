@@ -11,10 +11,10 @@
     ports: "{{ db_config_port }}:3306"
     volumes: "{{ docker_service_directory_db }}:/var/lib/mysql"
     env:
-      'MARIADB_ROOT_PASSWORD': "{{ db_pass }}"
-      'MARIADB_DATABSE': "{{ db_name }}"
-      'MARIADB_USER': "{{ db_user }}"
-      'MARIADB_PASSWORD': "{{ db_user_pass }}"
+      'MYSQL_ROOT_PASSWORD': "{{ db_pass }}"
+      'MYSQL_DATABSE': "{{ db_name }}"
+      'MYSQL_USER': "{{ db_user }}"
+      'MYSQL_PASSWORD': "{{ db_user_pass }}"
   when: db_type == 'mariadb' and create_user_and_db
 
 - name: Preconfigure database without creating user or db
@@ -26,8 +26,14 @@
     ports: "{{ db_config_port }}:3306"
     volumes: "{{ docker_service_directory_db }}:/var/lib/mysql"
     env:
-      'MARIADB_ROOT_PASSWORD': "{{ db_pass }}"
+      'MYSQL_ROOT_PASSWORD': "{{ db_pass }}"
   when: db_type == 'mariadb' and not create_user_and_db
+
+- name: Wait for configuration database container to start
+  wait_for:
+    port: "{{ db_config_port }}"
+    search_regex: mysql_native_password
+  when: db_type == 'mariadb'
 
 ## Postgres
 
