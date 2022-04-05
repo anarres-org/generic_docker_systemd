@@ -38,8 +38,6 @@ db_config_port: 3306
 db_name:
 db_user:
 
-db_setup_required: not database_conf.stat.exists
-
 ## Redis
 
 docker_service_directory_redis:
