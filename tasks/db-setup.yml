@@ -14,6 +14,12 @@
       'MARIADB_ROOT_PASSWORD': "{{ db_pass }}"
   when: db_type == 'mariadb'
 
+- name: Install dependencies for MariaDB setup
+  ansible.builtin.pip:
+    name: PyMySQL
+    state: present
+  when: db_type == 'mariadb'
+
 - name: Wait for configuration database container to start
   wait_for:
     port: "{{ db_config_port }}"
