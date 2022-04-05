@@ -18,23 +18,11 @@
     name: "{{ docker_network_name }}"
   when: create_network
 
-- name: Check if mariadb is already configured
+- name: Check if db is already configured
   stat:
-    path: "{{ docker_service_directory_db }}/mysql/"
-  register: database_mariadb_conf
-  when: enable_db and db_type == 'mariadb'
-
-- name: Check if postgres is already configured
-  stat:
-    path: "{{ docker_service_directory_db }}/postgresql.conf"
-  register: database_postgres_conf
-  when: enable_db and db_type == 'postgres'
-
-- name: Check if mongodb is already configured
-  stat:
-    path: "{{ docker_service_directory_db }}/storage.bson"
-  register: database_mongo_conf
-  when: enable_db and db_type == 'mongo'
+    path: "{{ docker_service_directory_db }}/*"
+  register: database_conf
+  when: enable_db
 
 - name: Setup database
   include_tasks: db-setup.yml

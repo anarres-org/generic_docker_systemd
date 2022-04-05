@@ -38,7 +38,7 @@ db_config_port: 3306
 db_name:
 db_user:
 
-db_setup_required: (db_type == 'mariadb' and not database_mariadb_conf.stat.exists ) or (db_type == 'postgres' and not database_postgres_conf.stat.exists ) or (db_type == 'mongo' and not database_mongo_conf.stat.exists )
+db_setup_required: not database_conf.stat.exists
 
 ## Redis
 
